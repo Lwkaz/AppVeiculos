@@ -88,7 +88,7 @@ public class ListaVeiculoAdapter extends RecyclerView.Adapter<ListaVeiculoAdapte
         holder.deletarVeiculo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Utils.exibirMensagem(context);
             }
         });
     }
