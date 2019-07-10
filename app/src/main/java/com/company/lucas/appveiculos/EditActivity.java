@@ -18,7 +18,7 @@ public class EditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
 
-        Bundle b = new Bundle();
+        Bundle b = getIntent().getExtras();
 
         Veiculo veiculo = (Veiculo) b.getSerializable("veiculo");
 

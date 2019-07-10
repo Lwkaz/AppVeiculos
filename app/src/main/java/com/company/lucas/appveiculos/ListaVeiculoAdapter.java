@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.List;
@@ -20,8 +21,8 @@ public class ListaVeiculoAdapter extends RecyclerView.Adapter<ListaVeiculoAdapte
         private final TextView marca;
         private final TextView ano_lancamento;
         private final TextView descricao;
-        private final Button editarVeiculo;
-        private final Button deletarVeiculo;
+        private final ImageButton editarVeiculo;
+        private final ImageButton deletarVeiculo;
 
         public ListaVeiculoHolder(View itemView) {
             super(itemView);
@@ -57,15 +58,16 @@ public class ListaVeiculoAdapter extends RecyclerView.Adapter<ListaVeiculoAdapte
 
     @Override
     public void onBindViewHolder(@NonNull final ListaVeiculoHolder holder, int position) {
+        ListaVeiculoHolder listaVeiculoHolder = (ListaVeiculoHolder)holder;
         if(veiculos != null) {
             Veiculo current = veiculos.get(position);
-            holder.marca.setText(current.getMarca());
-            holder.ano_lancamento.setText(current.getAno_lancamento());
-            holder.descricao.setText(current.getDescricao());
+            listaVeiculoHolder.marca.setText(current.getMarca());
+            listaVeiculoHolder.ano_lancamento.setText(current.getAno_lancamento());
+            listaVeiculoHolder.descricao.setText(current.getDescricao());
         } else {
-            holder.marca.setText("Sem dados");
-            holder.ano_lancamento.setText("Sem dados");
-            holder.descricao.setText("Sem dados");
+            listaVeiculoHolder.marca.setText("Sem dados");
+            listaVeiculoHolder.ano_lancamento.setText("Sem dados");
+            listaVeiculoHolder.descricao.setText("Sem dados");
         }
 
         holder.editarVeiculo.setOnClickListener(new View.OnClickListener() {
@@ -73,9 +75,10 @@ public class ListaVeiculoAdapter extends RecyclerView.Adapter<ListaVeiculoAdapte
             public void onClick(View v) {
                 if(veiculos != null) {
                     Veiculo current = veiculos.get(holder.getAdapterPosition());
-                    Intent intent = new Intent(context, EditActivity.class);
+
                     Bundle b = new Bundle();
                     b.putSerializable("veiculo", current);
+                    Intent intent = new Intent(context, EditActivity.class);
                     intent.putExtras(b);
                     ((Activity)context).startActivityForResult(intent, MainActivity.EDIT_VEICULO_ACTIVITY_REQUEST_CODE);
                 }
@@ -92,6 +95,9 @@ public class ListaVeiculoAdapter extends RecyclerView.Adapter<ListaVeiculoAdapte
 
     @Override
     public int getItemCount() {
-        return 0;
+        if(veiculos != null)
+            return veiculos.size();
+        else
+            return 0;
     }
 }

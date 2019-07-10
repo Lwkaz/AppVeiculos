@@ -17,26 +17,29 @@ public class MainActivity extends AppCompatActivity {
     public static final int ADD_VEICULO_ACTIVITY_REQUEST_CODE = 1;
     public static final int EDIT_VEICULO_ACTIVITY_REQUEST_CODE = 2;
     public static final int DELETED = 3;
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.recyclerView);
         final ListaVeiculoAdapter adapter = new ListaVeiculoAdapter(this);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         Veiculo veiculo = new Veiculo();
         veiculo.setMarca("Volkswagem");
         veiculo.setAno_lancamento("2012");
         veiculo.setDescricao("Um carro ótimo!");
         veiculo.setTipo_veiculo("Carro");
+        veiculo.setIdentificador(1);
+        veiculo.setImagem("image");
         List<Veiculo> veiculos = new ArrayList<Veiculo>();
         veiculos.add(veiculo);
-
         adapter.setVeiculos(veiculos);
+
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         floatingActionButton = findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
