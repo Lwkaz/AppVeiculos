@@ -10,6 +10,16 @@ public class Veiculo implements Serializable {
     private String tipo_veiculo;
     private String imagem;
 
+    public int getId_marca() {
+        return id_marca;
+    }
+
+    public void setId_marca(int id_marca) {
+        this.id_marca = id_marca;
+    }
+
+    private int id_marca;
+
     public int getIdentificador() {
         return identificador;
     }

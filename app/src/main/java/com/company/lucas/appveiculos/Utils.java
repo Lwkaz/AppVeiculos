@@ -3,9 +3,19 @@ package com.company.lucas.appveiculos;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Utils {
+    public static String url = "http://192.168.1.5:83";
+
     public static void exibirMensagem(Context context) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Deletar veículo");
@@ -33,4 +43,7 @@ public class Utils {
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
+
+
+
 }

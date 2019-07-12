@@ -12,6 +12,8 @@ public class EditActivity extends AppCompatActivity {
     EditText etData;
     EditText etDescricao;
     Button btnSalvar;
+    Veiculo veiculo;
+    String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +22,7 @@ public class EditActivity extends AppCompatActivity {
 
         Bundle b = getIntent().getExtras();
 
-        Veiculo veiculo = (Veiculo) b.getSerializable("veiculo");
+        veiculo = (Veiculo) b.getSerializable("veiculo");
 
         etMarca = findViewById(R.id.etMarca);
         etData = findViewById(R.id.etData);
@@ -29,11 +31,17 @@ public class EditActivity extends AppCompatActivity {
         etData.setText(veiculo.getAno_lancamento());
         etDescricao.setText(veiculo.getDescricao());
 
+        url =  Utils.url+ "/api/veiculo/update/" + String.valueOf(veiculo.getIdentificador());
+
         btnSalvar = findViewById(R.id.btnEdit);
         btnSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                veiculo.setMarca(etMarca.getText().toString());
+                veiculo.setAno_lancamento(etData.getText().toString());
+                veiculo.setDescricao(etDescricao.getText().toString());
 
+                NetworkUtils.atualizarVeiculo(url, veiculo, EditActivity.this);
             }
         });
     }
