@@ -24,7 +24,7 @@ public class Utils {
         builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
-                NetworkUtils.deletarVeiculo(Utils.url + "/veiculo/deletar/" + veiculo.getIdentificador(), context);
+                NetworkUtils.deletarVeiculo(Utils.url + "/api/veiculo/deletar/" + veiculo.getIdentificador(), context);
             }
         });
         builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {

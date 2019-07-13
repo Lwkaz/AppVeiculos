@@ -164,7 +164,7 @@ public class NetworkUtils {
 
     public static void deletarVeiculo(String url, final Context context) {
         JsonArrayRequest request = new JsonArrayRequest(
-                Request.Method.POST,
+                Request.Method.GET,
                 url,
                 null,
                 new Response.Listener<JSONArray>() {
@@ -181,6 +181,7 @@ public class NetworkUtils {
                 });
 
         RequestQueue queue = Volley.newRequestQueue(context);
+        request.setShouldCache(false);
         queue.add(request);
     }
 
