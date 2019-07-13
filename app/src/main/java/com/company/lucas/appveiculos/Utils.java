@@ -16,7 +16,7 @@ import java.util.Date;
 public class Utils {
     public static String url = "http://192.168.1.5:83";
 
-    public static void exibirMensagem(Context context) {
+    public static void exibirMensagem(final Context context, final Veiculo veiculo) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Deletar veículo");
         builder.setCancelable(false);
@@ -24,7 +24,7 @@ public class Utils {
         builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
-
+                NetworkUtils.deletarVeiculo(Utils.url + "/veiculo/deletar/" + veiculo.getIdentificador(), context);
             }
         });
         builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {

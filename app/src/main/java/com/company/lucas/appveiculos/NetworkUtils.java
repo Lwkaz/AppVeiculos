@@ -1,5 +1,6 @@
 package com.company.lucas.appveiculos;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,11 +10,13 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.JsonObject;
 
@@ -31,6 +34,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class NetworkUtils {
     public static void listarVeiculos(String url, final Context context, final ListaVeiculoAdapter adapter, final RecyclerView recyclerView) {
@@ -96,6 +100,17 @@ public class NetworkUtils {
                     }
                 })
         {
+//            public byte[] getBody() throws AuthFailureError {
+//                //        Map<String, String> params = getParams();
+//                Map<String, String> params = new HashMap<String, String>();
+//                params.put("ano_lancamento",veiculo.getAno_lancamento());
+//                params.put("marca", "myname");
+//                if (params != null && params.size() > 0) {
+//                    return encodeParameters(params, getParamsEncoding());
+//                }
+//                return null;
+//
+//            }
             @Override
             public byte[] getBody(){
                 String body =
@@ -103,14 +118,103 @@ public class NetworkUtils {
                                 "\"marca\":"+ String.valueOf(veiculo.getId_marca()) + "," +
                                 "\"descricao\":\""+ veiculo.getDescricao() + "\"," +
                                 "\"tipo_veiculo\":"+ String.valueOf(veiculo.getTipo_veiculo()) + "," +
-                                "\"imagem\":\""+ veiculo.getImagem() + "," +
+                                "\"imagem\":\""+ veiculo.getImagem() + "\"," +
                                 "\"nome_marca\":\""+ veiculo.getMarca() + "\"}";
 
                 return body.getBytes();
             }
         };
         RequestQueue queue = Volley.newRequestQueue(context);
-        request.setShouldCache(false);
+        queue.add(request);
+    }
+
+    public static void criarVeiculo(String url, final Veiculo veiculo, final Context context) {
+        JsonArrayRequest request = new JsonArrayRequest(
+                Request.Method.POST,
+                url,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Toast.makeText(context, "Atualizado com sucesso", Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context, "Erro ao atualizar", Toast.LENGTH_LONG).show();
+                    }
+                })
+        {
+            @Override
+            public byte[] getBody(){
+                String body =
+                        "\"ano_lancamento\":\""+ veiculo.getAno_lancamento() +"\",\n" +
+                                "\t\"marca\":"+ veiculo.getId_marca() +",\n" +
+                                "\t\"descricao\":\""+ veiculo.getDescricao() +"\",\n" +
+                                "\t\"tipo_veiculo\":\""+ veiculo.getTipo_veiculo() +"\",\n" +
+                                "\t\"imagem\":\""+ veiculo.getImagem() +"\"";
+
+                return body.getBytes();
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(request);
+    }
+
+    public static void deletarVeiculo(String url, final Context context) {
+        JsonArrayRequest request = new JsonArrayRequest(
+                Request.Method.POST,
+                url,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Toast.makeText(context, "Deletado com sucesso", Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context, "Erro ao deletar", Toast.LENGTH_LONG).show();
+                    }
+                });
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(request);
+    }
+
+    public static void cadastrarMarca(String url, final Marca marca, final Context context) {
+        JsonArrayRequest request = new JsonArrayRequest(
+                Request.Method.POST,
+                url,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Toast.makeText(context, "Marca cadastrada com sucesso", Toast.LENGTH_LONG).show();
+                        ((Activity)context).finish();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context, "Erro ao cadastrar marca", Toast.LENGTH_LONG).show();
+                    }
+                }){
+            @Override
+            public byte[] getBody(){
+                String body =
+                        "{\n" +
+                                "\t\"nome\":\""+ marca.getNome() +"\",\n" +
+                                "\t\"descricao\":\""+ marca.getDescricao() +"\"\n" +
+                                "}";
+
+                return body.getBytes();
+            }
+        };;
+
+        RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(request);
     }
 }
